@@ -1,8 +1,9 @@
 {
-    "name": "OCE ET MATH",
+    "name": "Trafic",
     "description": "",
     "dependencies": {
-        "device": "*"
+        "device": "*",
+        "Color Fading": "github:jwunderl/pxt-color#v0.2.2"
     },
     "files": [
         "main.blocks",
