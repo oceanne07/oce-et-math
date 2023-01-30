@@ -1,10 +1,16 @@
+info.onCountdownEnd(function () {
+    info.changeScoreBy(1)
+    info.startCountdown(1)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     otherSprite.destroy()
     info.changeLifeBy(-1)
+    scene.cameraShake(4, 500)
 })
 info.onLifeZero(function () {
     auto.startEffect(effects.fire)
     auto.destroy()
+    game.gameOver(false)
 })
 let projectile: Sprite = null
 let auto: Sprite = null
@@ -149,7 +155,9 @@ scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     `)
 controller.moveSprite(auto)
+info.startCountdown(1)
 info.setLife(3)
+info.setScore(0)
 game.onUpdateInterval(375, function () {
     projectile = sprites.create(img`
         . . . . . . e e c c e e . . . . 
