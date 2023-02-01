@@ -32,6 +32,7 @@ auto = sprites.create(img`
     . . . f f a a a a a a a a f f . 
     . . . . f f . . . . . . f f . . 
     `, SpriteKind.Player)
+auto.setBounceOnWall(true)
 scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -179,6 +180,7 @@ game.onUpdateInterval(375, function () {
         `, SpriteKind.Projectile)
     projectile.setVelocity(0, 100)
     projectile.setPosition(randint(0, 120), 0)
-    auto.setBounceOnWall(true)
     projectile.setFlag(SpriteFlag.DestroyOnWall, true)
+    projectile.bottom = 0
+    tiles.setCurrentTilemap(tilemap`niveau3`)
 })
