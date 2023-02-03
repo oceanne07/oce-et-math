@@ -1,5 +1,5 @@
 {
-    "name": "Trafic",
+    "name": "Traffic jam",
     "description": "",
     "dependencies": {
         "device": "*",

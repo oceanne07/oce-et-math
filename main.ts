@@ -2,17 +2,44 @@ info.onCountdownEnd(function () {
     info.changeScoreBy(1)
     info.startCountdown(1)
 })
-sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
-    otherSprite.destroy()
-    info.changeLifeBy(-1)
-    scene.cameraShake(4, 500)
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectile2 = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 4 4 4 4 4 . . . . . . 
+        . . . 4 4 4 5 5 5 d 4 4 4 4 . . 
+        . . 4 d 5 d 5 5 5 d d d 4 4 . . 
+        . . 4 5 5 1 1 1 d d 5 5 5 4 . . 
+        . 4 5 5 5 1 1 1 5 1 1 5 5 4 4 . 
+        . 4 d d 1 1 5 5 5 1 1 5 5 d 4 . 
+        . 4 5 5 1 1 5 1 1 5 5 d d d 4 . 
+        . 2 5 5 5 d 1 1 1 5 1 1 5 5 2 . 
+        . 2 d 5 5 d 1 1 1 5 1 1 5 5 2 . 
+        . . 2 4 d d 5 5 5 5 d d 5 4 . . 
+        . . . 2 2 4 d 5 5 d d 4 4 . . . 
+        . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
+        . . . 2 2 4 4 4 4 4 4 2 2 . . . 
+        . . . . . 2 2 2 2 2 2 . . . . . 
+        `, auto, 0, -200)
+    music.play(music.createSoundEffect(WaveShape.Square, 1600, 1, 255, 0, 300, SoundExpressionEffect.None, InterpolationCurve.Curve), music.PlaybackMode.UntilDone)
 })
 info.onLifeZero(function () {
-    auto.startEffect(effects.fire)
     auto.destroy()
     game.gameOver(false)
 })
-let projectile: Sprite = null
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite, effects.fire, 150)
+    info.changeScoreBy(5)
+    music.play(music.createSoundEffect(WaveShape.Noise, 3300, 1400, 255, 0, 150, SoundExpressionEffect.Warble, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    info.changeLifeBy(-1)
+    scene.cameraShake(4, 500)
+    music.play(music.createSoundEffect(WaveShape.Sawtooth, 300, 200, 255, 0, 75, SoundExpressionEffect.None, InterpolationCurve.Curve), music.PlaybackMode.UntilDone)
+})
+let myEnemy: Sprite = null
+let projectile2: Sprite = null
 let auto: Sprite = null
 auto = sprites.create(img`
     . . . . . . a a c c a a . . . . 
@@ -32,7 +59,6 @@ auto = sprites.create(img`
     . . . f f a a a a a a a a f f . 
     . . . . f f . . . . . . f f . . 
     `, SpriteKind.Player)
-auto.setBounceOnWall(true)
 scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -159,8 +185,10 @@ controller.moveSprite(auto)
 info.startCountdown(1)
 info.setLife(3)
 info.setScore(0)
+music.play(music.melodyPlayable(music.jumpDown), music.PlaybackMode.UntilDone)
+auto.setBounceOnWall(true)
 game.onUpdateInterval(375, function () {
-    projectile = sprites.create(img`
+    myEnemy = sprites.create(img`
         . . . . . . e e c c e e . . . . 
         . . . . . e 2 2 2 2 2 2 e . . . 
         . . . . 2 c 2 2 2 2 2 2 c 2 . . 
@@ -177,10 +205,10 @@ game.onUpdateInterval(375, function () {
         . . . f e 2 d e e e e d 2 e f . 
         . . . f f e e e e e e e e f f . 
         . . . . f f . . . . . . f f . . 
-        `, SpriteKind.Projectile)
-    projectile.setVelocity(0, 100)
-    projectile.setPosition(randint(0, 120), 0)
-    projectile.setFlag(SpriteFlag.DestroyOnWall, true)
-    projectile.bottom = 0
+        `, SpriteKind.Enemy)
+    myEnemy.setVelocity(0, 100)
+    myEnemy.setPosition(randint(0, 180), 0)
+    myEnemy.setFlag(SpriteFlag.DestroyOnWall, true)
+    myEnemy.bottom = 0
     tiles.setCurrentTilemap(tilemap`niveau3`)
 })
