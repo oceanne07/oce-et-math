@@ -3,28 +3,29 @@ info.onCountdownEnd(function () {
     info.startCountdown(1)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    projectile2 = sprites.createProjectileFromSprite(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . 4 4 4 4 4 . . . . . . 
-        . . . 4 4 4 5 5 5 d 4 4 4 4 . . 
-        . . 4 d 5 d 5 5 5 d d d 4 4 . . 
-        . . 4 5 5 1 1 1 d d 5 5 5 4 . . 
-        . 4 5 5 5 1 1 1 5 1 1 5 5 4 4 . 
-        . 4 d d 1 1 5 5 5 1 1 5 5 d 4 . 
-        . 4 5 5 1 1 5 1 1 5 5 d d d 4 . 
-        . 2 5 5 5 d 1 1 1 5 1 1 5 5 2 . 
-        . 2 d 5 5 d 1 1 1 5 1 1 5 5 2 . 
-        . . 2 4 d d 5 5 5 5 d d 5 4 . . 
-        . . . 2 2 4 d 5 5 d d 4 4 . . . 
-        . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
-        . . . 2 2 4 4 4 4 4 4 2 2 . . . 
-        . . . . . 2 2 2 2 2 2 . . . . . 
-        `, auto, 0, -200)
-    music.play(music.createSoundEffect(WaveShape.Square, 1600, 1, 255, 0, 300, SoundExpressionEffect.None, InterpolationCurve.Curve), music.PlaybackMode.UntilDone)
+    if (info.score() >= 10) {
+        projectile2 = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 4 4 4 4 4 . . . . . . 
+            . . . 4 4 4 5 5 5 d 4 4 4 4 . . 
+            . . 4 d 5 d 5 5 5 d d d 4 4 . . 
+            . . 4 5 5 1 1 1 d d 5 5 5 4 . . 
+            . 4 5 5 5 1 1 1 5 1 1 5 5 4 4 . 
+            . 4 d d 1 1 5 5 5 1 1 5 5 d 4 . 
+            . 4 5 5 1 1 5 1 1 5 5 d d d 4 . 
+            . 2 5 5 5 d 1 1 1 5 1 1 5 5 2 . 
+            . 2 d 5 5 d 1 1 1 5 1 1 5 5 2 . 
+            . . 2 4 d d 5 5 5 5 d d 5 4 . . 
+            . . . 2 2 4 d 5 5 d d 4 4 . . . 
+            . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
+            . . . 2 2 4 4 4 4 4 4 2 2 . . . 
+            . . . . . 2 2 2 2 2 2 . . . . . 
+            `, auto, 0, -200)
+        music.play(music.createSoundEffect(WaveShape.Square, 1600, 1, 255, 0, 300, SoundExpressionEffect.None, InterpolationCurve.Curve), music.PlaybackMode.UntilDone)
+    }
 })
 info.onLifeZero(function () {
-    auto.destroy()
     game.gameOver(false)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -181,12 +182,16 @@ scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     `)
-controller.moveSprite(auto)
-info.startCountdown(1)
 info.setLife(3)
 info.setScore(0)
 music.play(music.melodyPlayable(music.jumpDown), music.PlaybackMode.UntilDone)
-auto.setBounceOnWall(true)
+info.startCountdown(1)
+controller.moveSprite(auto)
+game.onUpdate(function () {
+    if (info.score() > 50) {
+        scaling.scaleToPercent(myEnemy, 150, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    }
+})
 game.onUpdateInterval(375, function () {
     myEnemy = sprites.create(img`
         . . . . . . e e c c e e . . . . 
