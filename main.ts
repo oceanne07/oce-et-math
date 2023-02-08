@@ -182,6 +182,7 @@ scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     `)
+game.showLongText("Quand tu auras 10 points tu pourras te défendre", DialogLayout.Bottom)
 info.setLife(3)
 info.setScore(0)
 music.play(music.melodyPlayable(music.jumpDown), music.PlaybackMode.UntilDone)
