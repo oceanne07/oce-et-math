@@ -3,7 +3,7 @@ info.onCountdownEnd(function () {
     info.startCountdown(1)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (info.score() >= 10) {
+    if (info.score() >= 20) {
         projectile2 = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -27,6 +27,9 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 info.onLifeZero(function () {
     game.gameOver(false)
+})
+info.onScore(450, function () {
+    game.gameOver(true)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprites.destroy(otherSprite, effects.fire, 150)
@@ -182,7 +185,7 @@ scene.setBackgroundImage(img`
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff111fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     `)
-game.showLongText("Quand tu auras 10 points tu pourras te défendre", DialogLayout.Bottom)
+game.showLongText("Quand tu atteindras les 20 points tu pourras te défendre", DialogLayout.Center)
 info.setLife(3)
 info.setScore(0)
 music.play(music.melodyPlayable(music.jumpDown), music.PlaybackMode.UntilDone)
@@ -191,6 +194,11 @@ controller.moveSprite(auto)
 game.onUpdate(function () {
     if (info.score() > 50) {
         scaling.scaleToPercent(myEnemy, 150, ScaleDirection.Uniformly, ScaleAnchor.Middle)
+    }
+})
+game.onUpdate(function () {
+    if (info.score() > 200) {
+        myEnemy.setVelocity(0, 120)
     }
 })
 game.onUpdateInterval(375, function () {
